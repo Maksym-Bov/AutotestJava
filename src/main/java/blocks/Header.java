@@ -13,7 +13,9 @@ public class Header {
     private final SelenideElement logoApteki = $("#g_logo");
     private final SelenideElement basketIcon = $x("//*[@id=\"__layout\"]//nav/a/span[1]/span");
 
+
     public void verifyCountDragInBasket(String countDrag){
         basketIcon.shouldHave(text(countDrag));
     }
+
 }
