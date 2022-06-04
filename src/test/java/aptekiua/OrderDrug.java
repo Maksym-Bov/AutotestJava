@@ -2,19 +2,19 @@ package aptekiua;
 
 import blocks.Header;
 import com.codeborne.selenide.Selenide;
-import org.testng.annotations.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import pages.Basket;
 import pages.CardPreparation;
 import pages.Main;
 import pages.PricesOfDrugs;
 import util.Constants;
-import util.ListenersTestNG;
 
 import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 
-@Listeners(ListenersTestNG.class)
 
 public class OrderDrug {
     Main main  = new Main();
@@ -25,11 +25,11 @@ public class OrderDrug {
 
     String countDragBasket = "1";
 
-    @BeforeMethod
+    @Before
     public void mainPages() {
         open("https://apteki.ua/");
     }
-    @AfterMethod
+    @After
     public void tearDown() {
         Selenide.clearBrowserCookies();
         Selenide.clearBrowserLocalStorage();

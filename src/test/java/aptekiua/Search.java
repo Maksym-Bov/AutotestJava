@@ -1,22 +1,28 @@
 package aptekiua;
 
 import com.codeborne.selenide.Selenide;
-import org.testng.annotations.*;
-import util.Constants;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import pages.Main;
-import util.ListenersTestNG;
+import util.Constants;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.open;
 
-@Listeners(ListenersTestNG.class)
+@RunWith(DataProviderRunner.class)
 public class Search {
     Main main  = new Main();
-    @BeforeMethod
+    @Before
     public void mainPages() {
         open("https://apteki.ua/");
     }
-    @AfterMethod
+    @After
     public void tearDown() {
         Selenide.clearBrowserCookies();
         Selenide.clearBrowserLocalStorage();
@@ -28,6 +34,7 @@ public class Search {
         main.checkMessagesHeadSearch(Constants.MESSAGES_HEAD_SEARCH);
     }
 
+    @Ignore
     @Test
     public void searchInputOneSymbol (){
         main.inputSearchDrags("А");
@@ -53,15 +60,18 @@ public class Search {
         main.checkMessagesHeadSearch(Constants.NOT_EXIST_MESSAGES_HEAD_SEARCH);
     }
 
-    @Test(dataProvider = "nameDrug")
+    @DataProvider
+    public static Object[][] credentials(){
+        return new Object [][]  { {"Нурофен"},{"Гематоген"}};
+
+    }
+
+    @Test
+    @UseDataProvider("credentials")
     public void searchListDrug (String nameDrug){
         main.inputSearchDrags(nameDrug);
         main.getSearchMessagesHead().should(exist);;
     }
 
-    @DataProvider( name = "nameDrug")
-    public Object[][] credentials(){
-        return new Object [][]  { {"Нурофен"},{"Гематоген"}};
 
-    }
 }
