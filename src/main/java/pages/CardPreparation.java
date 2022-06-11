@@ -1,21 +1,15 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
-import lombok.Getter;
 
-import static com.codeborne.selenide.Selenide.$;
+import lombok.Getter;
+import org.openqa.selenium.By;
+
 
 @Getter
 public class CardPreparation {
 
-
-    private final SelenideElement blockAboutPreparation = $(".border-green-dark");
-    private final SelenideElement buttonCountPharmacy = $(".whitespace-nowrap > .btn-primary");
-    private final SelenideElement buttonCountPharmacyMore = $(".border-green-dark");
-
-
-    public void clickButtonCountPharmacy(){
-        buttonCountPharmacy.click();
-    }
+    private final By blockAboutPreparation = By.cssSelector(".border-green-dark");
+    private final By buttonCountPharmacy = By.cssSelector(".whitespace-nowrap > .btn-primary");
+    private final By buttonCountPharmacyMore = By.cssSelector(".border-green-dark");
 
 }

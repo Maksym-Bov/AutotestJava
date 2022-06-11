@@ -1,19 +1,13 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
-import static com.codeborne.selenide.Selenide.$;
+import lombok.Getter;
+import org.openqa.selenium.By;
 
+@Getter
 public class PricesOfDrugs {
 
-    private final SelenideElement plusDrags = $(".c-w-fraction-plus");
-    private final SelenideElement buttonAddDragsInBasket = $("button.added");
+    private final By plusDrags = By.cssSelector(".c-w-fraction-plus");
+    private final By buttonAddDragsInBasket = By.cssSelector("button.added");
 
-    public void addCountDrags(int count){
-        for(int i = 0; i < count; i++){
-            plusDrags.click();
-        }
-    }
-    public void addDragsInBasket(){
-        buttonAddDragsInBasket.click();
-    }
+
 }

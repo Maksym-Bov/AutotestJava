@@ -1,30 +1,19 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
 import lombok.Getter;
-
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
+import org.openqa.selenium.By;
 
 @Getter
 public class Main {
 
+    private final By searchField = By.cssSelector("[name='search']");
+    private final By searchModalWindow = By.cssSelector(".modal-overlay");
+    private final By searchMessagesHead = By.cssSelector("span.text-secondary.text-sm");
+    private final By searchSpin = By.cssSelector(".animate-spin");
 
 
-    private final SelenideElement searchField = $("[name=\"search\"]");
-    private final SelenideElement searchModalWindow = $(".modal-overlay");
-    private final SelenideElement searchMessagesHead = $("span.text-secondary");
-
-    public void selectDrugsAtSearch(String drag){
-        $("[value=" + drag + "]").click();
+    public By selectDrugsAtSearch(String drag){
+        return By.cssSelector("[value=" + drag + "]");
     }
 
-    public  void inputSearchDrags(String drag){
-        searchField.click();
-        searchField.setValue(drag);
-    }
-    public void checkMessagesHeadSearch(String message){
-        searchMessagesHead.shouldHave(text(message));
-
-    }
 }

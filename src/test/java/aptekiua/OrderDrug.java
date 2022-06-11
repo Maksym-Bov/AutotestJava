@@ -1,79 +1,98 @@
 package aptekiua;
 
-import blocks.Header;
-import com.codeborne.selenide.Selenide;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.Basket;
 import pages.CardPreparation;
 import pages.Main;
 import pages.PricesOfDrugs;
 import util.Constants;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.open;
+import java.time.Duration;
 
 
 public class OrderDrug {
-    Main main  = new Main();
-    CardPreparation cardPreparation = new CardPreparation();
-    Header header = new Header();
-    PricesOfDrugs pricesOfDrugs = new PricesOfDrugs();
-    Basket basket = new Basket();
 
-    String countDragBasket = "1";
+
+
+    WebDriver driver;
+    Main main;
+    PricesOfDrugs pricesOfDrugs;
+    CardPreparation cardPreparation;
+    Basket basket;
 
     @Before
-    public void mainPages() {
-        open("https://apteki.ua/");
+    public void setUpDriver(){
+        main = new Main();
+        cardPreparation = new CardPreparation();
+        pricesOfDrugs = new PricesOfDrugs();
+        basket = new Basket();
+        System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.get("https://apteki.ua/");
     }
+
     @After
-    public void tearDown() {
-        Selenide.clearBrowserCookies();
-        Selenide.clearBrowserLocalStorage();
+    public void setDownDriver() {
+        driver.manage().deleteAllCookies();
+        driver.quit();
     }
-
-
 
     @Test
     public void ordersToDoseDragsPharmacy(){
 
-        main.inputSearchDrags(Constants.DRAGS_NAME_NEMISIL);
-        main.getSearchModalWindow().shouldBe(enabled);
-        main.selectDrugsAtSearch(Constants.DRAGS_NAME_NEMISIL);
-        cardPreparation.getBlockAboutPreparation().shouldBe(enabled);
-        cardPreparation.clickButtonCountPharmacy();
-        header.getLogoApteki().shouldBe(enabled);
-        pricesOfDrugs.addCountDrags(2);
-        header.verifyCountDragInBasket(countDragBasket);
-        pricesOfDrugs.addDragsInBasket();
-        basket.getButtonOrderDrugsBasket().shouldBe(enabled);
-        basket.toOrderDrugsInBasket();
-        basket.getMakingOrderFieldNumber().setValue(Constants.NUMBER_PHONE_KYIVSTAR_NOMASK_CONTRY);
-        basket.toOrderAtMakingOrder();
-        basket.getTitleModalWindowOrderConfirmation().shouldBe(enabled);
-        basket.getTitleModalWindowOrderConfirmation().shouldHave(text(Constants.TITLE_CONFIRMATION_UKRAINE));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.findElement(main.getSearchField()).click();
+        driver.findElement(main.getSearchField()).sendKeys(Constants.DRAGS_NAME_NEMISIL);
+        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[value=" + Constants.DRAGS_NAME_NEMISIL + "]")));
+        driver.findElement(main.selectDrugsAtSearch(Constants.DRAGS_NAME_NEMISIL)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cardPreparation.getButtonCountPharmacy()));
+        driver.findElement(cardPreparation.getButtonCountPharmacy()).click();
+        wait.until(ExpectedConditions.elementToBeClickable(pricesOfDrugs.getPlusDrags()));
+        driver.findElement(pricesOfDrugs.getPlusDrags()).click();
+        driver.findElement(pricesOfDrugs.getPlusDrags()).click();
+        wait.until(ExpectedConditions.elementToBeClickable(pricesOfDrugs.getButtonAddDragsInBasket()));
+        driver.findElement(pricesOfDrugs.getButtonAddDragsInBasket()).click();
+        Assert.assertTrue(driver.findElement(basket.getButtonOrderDrugsBasket()).isDisplayed());
+        driver.findElement(basket.getButtonOrderDrugsBasket()).click();
+        Assert.assertTrue(driver.findElement(basket.getMakingOrderFieldNumber()).isDisplayed());
+        driver.findElement(basket.getMakingOrderFieldNumber()).sendKeys(Constants.NUMBER_PHONE_KYIVSTAR_NOMASK_CONTRY);
+        driver.findElement(basket.getButtonOrderAtMakingOrder()).click();
+        Assert.assertTrue(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed());
+        String titleModalWindowOrder = driver.findElement(basket.getTitleModalWindowOrderConfirmation()).getText();
+        Assert.assertEquals(titleModalWindowOrder, Constants.TITLE_CONFIRMATION_UKRAINE);
     }
 
     @Test
     public void orderPharmacy(){
 
-        main.inputSearchDrags(Constants.DRAGS_NAME_NEMISIL);
-        main.getSearchModalWindow().shouldBe(enabled);
-        main.selectDrugsAtSearch(Constants.DRAGS_NAME_NEMISIL);
-        cardPreparation.getBlockAboutPreparation().shouldBe(enabled);
-        cardPreparation.clickButtonCountPharmacy();
-        header.getLogoApteki().shouldBe(enabled);
-        pricesOfDrugs.addCountDrags(2);
-        header.verifyCountDragInBasket(countDragBasket);
-        pricesOfDrugs.addDragsInBasket();
-        basket.getButtonOrderDrugsBasket().shouldBe(enabled);
-        basket.toOrderDrugsInBasket();
-        basket.getMakingOrderFieldNumber().setValue(Constants.NUMBER_PHONE_KYIVSTAR_NOMASK_CONTRY);
-        basket.toOrderAtMakingOrder();
-        basket.getTitleModalWindowOrderConfirmation().shouldBe(enabled);
-        basket.getTitleModalWindowOrderConfirmation().shouldHave(text(Constants.TITLE_CONFIRMATION_UKRAINE));
+WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.findElement(main.getSearchField()).click();
+        driver.findElement(main.getSearchField()).sendKeys(Constants.DRAGS_NAME_NEMISIL);
+        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[value=" + Constants.DRAGS_NAME_NEMISIL + "]")));
+        driver.findElement(main.selectDrugsAtSearch(Constants.DRAGS_NAME_NEMISIL)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(cardPreparation.getButtonCountPharmacy()));
+        driver.findElement(cardPreparation.getButtonCountPharmacy()).click();
+        wait.until(ExpectedConditions.elementToBeClickable(pricesOfDrugs.getPlusDrags()));
+        driver.findElement(pricesOfDrugs.getPlusDrags()).click();
+        wait.until(ExpectedConditions.elementToBeClickable(pricesOfDrugs.getButtonAddDragsInBasket()));
+        driver.findElement(pricesOfDrugs.getButtonAddDragsInBasket()).click();
+        Assert.assertTrue(driver.findElement(basket.getButtonOrderDrugsBasket()).isDisplayed());
+        driver.findElement(basket.getButtonOrderDrugsBasket()).click();
+        Assert.assertTrue(driver.findElement(basket.getMakingOrderFieldNumber()).isDisplayed());
+        driver.findElement(basket.getMakingOrderFieldNumber()).sendKeys(Constants.NUMBER_PHONE_KYIVSTAR_NOMASK_CONTRY);
+        driver.findElement(basket.getButtonOrderAtMakingOrder()).click();
+        Assert.assertTrue(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed());
+        String titleModalWindowOrder = driver.findElement(basket.getTitleModalWindowOrderConfirmation()).getText();
+        Assert.assertEquals(titleModalWindowOrder, Constants.TITLE_CONFIRMATION_UKRAINE);
     }
 }
