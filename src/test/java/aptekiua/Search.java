@@ -1,27 +1,31 @@
 package aptekiua;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.*;
-import org.junit.runner.RunWith;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import pages.Main;
 import util.Constants;
 
-@RunWith(DataProviderRunner.class)
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+
+
 public class Search {
     WebDriver driver;
     Main main;
-    @Before
+    @BeforeMethod
     public void setUpDriver() {
         main = new Main();
         System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://apteki.ua/");
     }
-    @After
+    @AfterMethod
     public void tearDown() {
         driver.manage().deleteAllCookies();
         driver.quit();
@@ -33,7 +37,7 @@ public class Search {
         driver.findElement(main.getSearchField()).sendKeys("Ас");
         Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
         String titleModalWindowOrder = driver.findElement(main.getSearchMessagesHead()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.MESSAGES_HEAD_SEARCH);
+        assertThat(titleModalWindowOrder,samePropertyValuesAs(Constants.MESSAGES_HEAD_SEARCH));
     }
 
     @Test
@@ -42,7 +46,7 @@ public class Search {
         driver.findElement(main.getSearchField()).sendKeys("А");
         Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
         String titleModalWindowOrder = driver.findElement(main.getSearchMessagesHead()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.MESSAGES_HEAD_SEARCH);
+        assertThat(titleModalWindowOrder,samePropertyValuesAs(Constants.MESSAGES_HEAD_SEARCH));
     }
 
     @Test
@@ -53,19 +57,18 @@ public class Search {
         Assert.assertTrue(driver.findElements(main.getSearchMessagesHead()).isEmpty());
     }
 
-    @DataProvider
-    public static Object[][] credentials(){
-        return new Object [][]  { {"Нурофен"},{"Гематоген"}};
-
-    }
-
-    @Test
-    @UseDataProvider("credentials")
+    @Test(dataProvider = "nameDrug")
     public void searchListDrug (String nameDrug){
-
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys(nameDrug);
         Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
         Assert.assertTrue(driver.findElements(main.getSearchMessagesHead()).isEmpty());
     }
+
+    @DataProvider( name = "nameDrug")
+    public Object[][] credentials(){
+        return new Object [][]  { {"Нурофен"},{"Гематоген"}};
+
+    }
+
 }

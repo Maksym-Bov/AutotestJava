@@ -1,21 +1,22 @@
 package aptekiua;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import pages.Basket;
 import pages.CardPreparation;
 import pages.Main;
 import pages.PricesOfDrugs;
 import util.Constants;
-
 import java.time.Duration;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 
 
 public class OrderDrug {
@@ -28,7 +29,7 @@ public class OrderDrug {
     CardPreparation cardPreparation;
     Basket basket;
 
-    @Before
+    @BeforeMethod
     public void setUpDriver(){
         main = new Main();
         cardPreparation = new CardPreparation();
@@ -39,7 +40,7 @@ public class OrderDrug {
         driver.get("https://apteki.ua/");
     }
 
-    @After
+    @AfterMethod
     public void setDownDriver() {
         driver.manage().deleteAllCookies();
         driver.quit();
@@ -68,7 +69,7 @@ public class OrderDrug {
         driver.findElement(basket.getButtonOrderAtMakingOrder()).click();
         Assert.assertTrue(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed());
         String titleModalWindowOrder = driver.findElement(basket.getTitleModalWindowOrderConfirmation()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.TITLE_CONFIRMATION_UKRAINE);
+        assertThat(titleModalWindowOrder,samePropertyValuesAs(Constants.TITLE_CONFIRMATION_UKRAINE));
     }
 
     @Test
@@ -93,6 +94,6 @@ WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.findElement(basket.getButtonOrderAtMakingOrder()).click();
         Assert.assertTrue(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed());
         String titleModalWindowOrder = driver.findElement(basket.getTitleModalWindowOrderConfirmation()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.TITLE_CONFIRMATION_UKRAINE);
+        assertThat(titleModalWindowOrder,samePropertyValuesAs(Constants.TITLE_CONFIRMATION_UKRAINE));
     }
 }
