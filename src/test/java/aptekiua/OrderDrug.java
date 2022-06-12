@@ -17,6 +17,8 @@ import util.Constants;
 
 import java.time.Duration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class OrderDrug {
 
@@ -51,7 +53,7 @@ public class OrderDrug {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys(Constants.DRAGS_NAME_NEMISIL);
-        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
+        assertThat(driver.findElement(main.getSearchModalWindow()).isDisplayed()).isTrue();
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[value=" + Constants.DRAGS_NAME_NEMISIL + "]")));
         driver.findElement(main.selectDrugsAtSearch(Constants.DRAGS_NAME_NEMISIL)).click();
         wait.until(ExpectedConditions.elementToBeClickable(cardPreparation.getButtonCountPharmacy()));
@@ -61,23 +63,24 @@ public class OrderDrug {
         driver.findElement(pricesOfDrugs.getPlusDrags()).click();
         wait.until(ExpectedConditions.elementToBeClickable(pricesOfDrugs.getButtonAddDragsInBasket()));
         driver.findElement(pricesOfDrugs.getButtonAddDragsInBasket()).click();
-        Assert.assertTrue(driver.findElement(basket.getButtonOrderDrugsBasket()).isDisplayed());
+        assertThat(driver.findElement(basket.getButtonOrderDrugsBasket()).isDisplayed()).isTrue();
         driver.findElement(basket.getButtonOrderDrugsBasket()).click();
-        Assert.assertTrue(driver.findElement(basket.getMakingOrderFieldNumber()).isDisplayed());
+        assertThat(driver.findElement(basket.getMakingOrderFieldNumber()).isDisplayed()).isTrue();
         driver.findElement(basket.getMakingOrderFieldNumber()).sendKeys(Constants.NUMBER_PHONE_KYIVSTAR_NOMASK_CONTRY);
         driver.findElement(basket.getButtonOrderAtMakingOrder()).click();
         Assert.assertTrue(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed());
         String titleModalWindowOrder = driver.findElement(basket.getTitleModalWindowOrderConfirmation()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.TITLE_CONFIRMATION_UKRAINE);
+        assertThat(titleModalWindowOrder).contains(Constants.TITLE_CONFIRMATION_UKRAINE);
+
     }
 
     @Test
     public void orderPharmacy(){
 
-WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys(Constants.DRAGS_NAME_NEMISIL);
-        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
+        assertThat(driver.findElement(main.getSearchModalWindow()).isDisplayed()).isTrue();
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[value=" + Constants.DRAGS_NAME_NEMISIL + "]")));
         driver.findElement(main.selectDrugsAtSearch(Constants.DRAGS_NAME_NEMISIL)).click();
         wait.until(ExpectedConditions.elementToBeClickable(cardPreparation.getButtonCountPharmacy()));
@@ -86,13 +89,13 @@ WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.findElement(pricesOfDrugs.getPlusDrags()).click();
         wait.until(ExpectedConditions.elementToBeClickable(pricesOfDrugs.getButtonAddDragsInBasket()));
         driver.findElement(pricesOfDrugs.getButtonAddDragsInBasket()).click();
-        Assert.assertTrue(driver.findElement(basket.getButtonOrderDrugsBasket()).isDisplayed());
+        assertThat(driver.findElement(basket.getButtonOrderDrugsBasket()).isDisplayed()).isTrue();
         driver.findElement(basket.getButtonOrderDrugsBasket()).click();
-        Assert.assertTrue(driver.findElement(basket.getMakingOrderFieldNumber()).isDisplayed());
+        assertThat(driver.findElement(basket.getMakingOrderFieldNumber()).isDisplayed()).isTrue();
         driver.findElement(basket.getMakingOrderFieldNumber()).sendKeys(Constants.NUMBER_PHONE_KYIVSTAR_NOMASK_CONTRY);
         driver.findElement(basket.getButtonOrderAtMakingOrder()).click();
-        Assert.assertTrue(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed());
+        assertThat(driver.findElement(basket.getTitleModalWindowOrderConfirmation()).isDisplayed()).isTrue();
         String titleModalWindowOrder = driver.findElement(basket.getTitleModalWindowOrderConfirmation()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.TITLE_CONFIRMATION_UKRAINE);
+        assertThat(titleModalWindowOrder).contains(Constants.TITLE_CONFIRMATION_UKRAINE);
     }
 }

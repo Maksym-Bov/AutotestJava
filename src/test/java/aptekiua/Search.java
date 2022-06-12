@@ -10,6 +10,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import pages.Main;
 import util.Constants;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(DataProviderRunner.class)
 public class Search {
     WebDriver driver;
@@ -31,26 +33,26 @@ public class Search {
     public void searchInputTwoSymbol (){
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys("Ас");
-        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
+        assertThat(driver.findElement(main.getSearchModalWindow()).isDisplayed()).isTrue();
         String titleModalWindowOrder = driver.findElement(main.getSearchMessagesHead()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.MESSAGES_HEAD_SEARCH);
+        assertThat(titleModalWindowOrder).contains(Constants.MESSAGES_HEAD_SEARCH);
     }
 
     @Test
     public void searchInputOneSymbol (){
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys("А");
-        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
+        assertThat(driver.findElement(main.getSearchModalWindow()).isDisplayed()).isTrue();
         String titleModalWindowOrder = driver.findElement(main.getSearchMessagesHead()).getText();
-        Assert.assertEquals(titleModalWindowOrder, Constants.MESSAGES_HEAD_SEARCH);
+        assertThat(titleModalWindowOrder).contains(Constants.MESSAGES_HEAD_SEARCH);
     }
 
     @Test
     public void searchInputEmpty (){
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys("");
-        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
-        Assert.assertTrue(driver.findElements(main.getSearchMessagesHead()).isEmpty());
+        assertThat(driver.findElement(main.getSearchModalWindow()).isDisplayed()).isTrue();
+        assertThat(driver.findElements(main.getSearchMessagesHead()).isEmpty()).isTrue();
     }
 
     @DataProvider
@@ -65,7 +67,7 @@ public class Search {
 
         driver.findElement(main.getSearchField()).click();
         driver.findElement(main.getSearchField()).sendKeys(nameDrug);
-        Assert.assertTrue(driver.findElement(main.getSearchModalWindow()).isDisplayed());
-        Assert.assertTrue(driver.findElements(main.getSearchMessagesHead()).isEmpty());
+        assertThat(driver.findElement(main.getSearchModalWindow()).isDisplayed()).isTrue();
+        assertThat(driver.findElements(main.getSearchMessagesHead()).isEmpty()).isTrue();
     }
 }
