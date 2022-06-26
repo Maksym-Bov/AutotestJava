@@ -72,8 +72,6 @@ public class testHttp {
     @Test
     public void deleteList() {
         Response response = given()
-                .header("Content-type", "application/json")
-                .when()
                 .delete(POST_USER + USER_ID)
                 .then()
                 .extract().response();
